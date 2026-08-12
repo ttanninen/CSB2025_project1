@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        <h1>Assignment portal</h1>
+    </title>
+</head>
+<body>
+    <p>
+        Koko homma vaihtui
+        <ul>
+            {% for student in student_list %}
+            <li>{{student.name}} | {{student.number}}</li>
+            {% endfor %}
+        </ul>
+    </p>
+</body>
+</html>

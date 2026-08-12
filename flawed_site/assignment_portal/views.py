@@ -1,4 +1,6 @@
-from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404, redirect
+
+from .models import Course, Question
 
 def index(request):
-    return HttpResponse("Hello, world, you are at flawed site's index.")
+    return render(request, 'assignment_portal/index.html')
