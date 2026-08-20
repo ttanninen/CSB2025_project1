@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            {{ submission.course.name }}
+        </title>
+    </head>
+    <body>
+        <h1>{{ submission.course.name }}</h1>
+        
+        <h2>Quiz results for {{ submission.student }}</h2>
+        <p>
+            You received:
+            <strong>{{ submission.points }} / 3</strong> points
+        </p>
+
+    <a href="/">[ Home ]</a>
+    </body>
+
+</html>
+

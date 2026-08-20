@@ -2,17 +2,39 @@
 <html>
 <head>
     <title>
-        <h1>Assignment portal</h1>
+        Quiz portal
     </title>
 </head>
 <body>
-    <p>
-        Koko homma vaihtui
+    <h1>Welcome {{ student.username }}</h1>
+    <h2>Courses</h2>
+    <p>    
         <ul>
-            {% for student in student_list %}
-            <li>{{student.name}} | {{student.number}}</li>
+            {% for course in courses %}
+            <li>{{course.name}} | <a href="{% url 'quiz' course.id %}">Take quiz</a></li>
             {% endfor %}
         </ul>
     </p>
+
+    <h2>My points</h2>
+    <p>
+        {% for submission in submissions %}
+            <p>
+                {{ submission.course.name }}:
+                {{ submission.points }} / 3 points
+                <a href="{% url 'results' submission.id %}">[ View result ]</a>
+            </p>
+        {% empty %}
+            <p>You haven't completed any quizzes yet.</p>
+        {% endfor %}
+    </p>
+    <p>
+    <form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">Log out</button>
+    </form>
+    </p>
+</form>
+
 </body>
 </html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Register</title>
+</head>
+
+<body>
+
+    <h1>Create account</h1>
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        <p>
+            <label>
+                Username:
+            </label>
+
+            <input
+                type="text"
+                name="username"
+                required
+            >
+        </p>
+
+        <p>
+            <label>
+                Password:
+            </label>
+
+            <input
+                type="password"
+                name="password"
+                required
+            >
+        </p>
+
+        <button type="submit">
+            Register
+        </button>
+
+    </form>
+
+    <p>
+        Already have an account?
+        <a href="{% url 'login' %}">
+            Log in
+        </a>
+    </p>
+
+</body>
+
+</html>

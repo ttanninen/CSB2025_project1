@@ -14,10 +14,11 @@ class Question(models.Model):
         related_name="questions"
         )
 
-    text = models.CharField(max_length=300)
+    text = models.CharField(max_length=300, default="")
 
     def __str__(self):
         return self.text
+
 class Answer(models.Model):
     question = models.ForeignKey(
         Question,
@@ -25,11 +26,17 @@ class Answer(models.Model):
         related_name="answers"
     )
 
+    text = models.CharField(max_length=300, default="")
+    is_correct = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.text
+
 class Submission(models.Model):
     student = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name="Submissions"
+        related_name="submissions"
     )
     course = models.ForeignKey(
         Course,
