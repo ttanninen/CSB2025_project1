@@ -14,8 +14,8 @@ def register(request):
         password = request.POST.get("password")
 
         user = User.objects.create_user(
-            username = username,
-            password = password
+            username=username,
+            password=password
         )
 
         login(request, user)
@@ -24,13 +24,13 @@ def register(request):
 
     return render(request, "assignment_portal/register.html")
 
+
 @login_required
 def index(request):
     search = request.GET.get("search", "")
     if search:
         '''
         # SAFE SEARCH:
-
         courses.objects.filter(
             name__icontains=search
         )
@@ -57,16 +57,18 @@ def index(request):
         student=request.user
     ).select_related("course")
 
-    return render(request, "assignment_portal/index.html", {"courses": courses, "student": student, "submissions": submissions, "search": search})
+    return render(request, "assignment_portal/index.html",
+                  {"courses": courses, "student": student, "submissions": submissions, "search": search})
+
 
 @login_required
 def quiz(request, course_id):
-    course = get_object_or_404(Course, id = course_id)
+    course = get_object_or_404(Course, id=course_id)
 
     if Submission.objects.filter(
         student=request.user,
         course=course
-        ).exists():
+    ).exists():
 
         return redirect("index")
 
@@ -83,31 +85,36 @@ def quiz(request, course_id):
             if answer_id:
                 answer = get_object_or_404(
                     question.answers,
-                    id = answer_id
+                    id=answer_id
                 )
 
                 if answer.is_correct:
                     points += 1
 
         Submission.objects.create(
-            student = request.user,
-            course = course,
-            points = points
+            student=request.user,
+            course=course,
+            points=points
         )
         return redirect("index")
 
-    return render(request, "assignment_portal/quiz.html", {"course": course, "questions": questions})
+    return render(request, "assignment_portal/quiz.html",
+                  {"course": course, "questions": questions})
+
 
 @login_required
 def results(request, submission_id):
     submission = get_object_or_404(
         Submission,
-        id = submission_id
-        )
+        id=submission_id
+    )
 
-    return render(request,"assignment_portal/results.html", {"submission": submission})
+    return render(request, "assignment_portal/results.html",
+                  {"submission": submission})
+
 
 @login_required
 def browse(request):
     courses = Course.objects.all()
-    return render(request,"assignment_portal/browse.html", {"courses": courses})
+    return render(request, "assignment_portal/browse.html",
+                  {"courses": courses})
