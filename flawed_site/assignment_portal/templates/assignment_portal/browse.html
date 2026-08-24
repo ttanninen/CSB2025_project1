@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            {{ submission.course.name }}
+        </title>
+    </head>
+    <body>
+        <h2>Courses</h2>
+        <p>    
+            <ul>
+                {% for course in courses %}
+                <li>{{course.name}} | <a href="{% url 'quiz' course.id %}">Take quiz</a></li>
+                {% endfor %}
+            </ul>
+        </p>
+        <a href="/">[ Home ]</a>
+    </body>
+
+</html>
+
