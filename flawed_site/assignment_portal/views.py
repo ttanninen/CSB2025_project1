@@ -3,6 +3,8 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
+from django.db import connection
+
 from .models import Course, Submission
 
 
@@ -24,12 +26,38 @@ def register(request):
 
 @login_required
 def index(request):
-    courses = Course.objects.all()
+    search = request.GET.get("search", "")
+    if search:
+        '''
+        # SAFE SEARCH:
+
+        courses.objects.filter(
+            name__icontains=search
+        )
+        '''
+        with connection.cursor() as c:
+            c.execute(
+                "SELECT id, name FROM assignment_portal_course "
+                "WHERE name LIKE '%" + search + "%'"
+            )
+
+            rows = c.fetchall()
+
+        courses = [
+            {"id": row[0], "name": row[1]}
+            for row in rows
+        ]
+
+    else:
+        courses = Course.objects.all()
+
     student = request.user
+
     submissions = Submission.objects.filter(
         student=request.user
     ).select_related("course")
-    return render(request, "assignment_portal/index.html", {"courses": courses, "student": student, "submissions": submissions})
+
+    return render(request, "assignment_portal/index.html", {"courses": courses, "student": student, "submissions": submissions, "search": search})
 
 @login_required
 def quiz(request, course_id):
@@ -78,3 +106,8 @@ def results(request, submission_id):
         )
 
     return render(request,"assignment_portal/results.html", {"submission": submission})
+
+@login_required
+def browse(request):
+    courses = Course.objects.all()
+    return render(request,"assignment_portal/browse.html", {"courses": courses})

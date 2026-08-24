@@ -7,26 +7,48 @@
 </head>
 <body>
     <h1>Welcome {{ student.username }}</h1>
+    <form method="get" action="">
+        <input 
+            type="text"
+            name="search"
+            placeholder="Search courses"
+            value="{{ search }}"
+            >
+
+        <button type="submit">Search</button>
+    </form>
     <h2>Courses</h2>
+    {% if search %}
     <p>    
         <ul>
             {% for course in courses %}
             <li>{{course.name}} | <a href="{% url 'quiz' course.id %}">Take quiz</a></li>
+            {% empty %}
+            No courses found. Try e.g. "Python" or "SQL".
             {% endfor %}
         </ul>
+    </p>
+    {% else %}
+    Search courses using search bar (e.g. "Python", "SQL", ...)
+    {% endif %}
+    <br>
+    <p>
+        <a href="{% url 'browse' %}">Browse course list</a>
     </p>
 
     <h2>My points</h2>
     <p>
-        {% for submission in submissions %}
-            <p>
-                {{ submission.course.name }}:
-                {{ submission.points }} / 3 points
-                <a href="{% url 'results' submission.id %}">[ View result ]</a>
-            </p>
-        {% empty %}
-            <p>You haven't completed any quizzes yet.</p>
-        {% endfor %}
+        <ul>
+            {% for submission in submissions %}
+                <li>
+                    {{ submission.course.name }}:
+                    {{ submission.points }} / 3 points
+                    <a href="{% url 'results' submission.id %}">[ View result ]</a>
+                </li>
+            {% empty %}
+                <p>You haven't completed any quizzes yet.</p>
+            {% endfor %}
+        </ul>
     </p>
     <p>
     <form method="post" action="{% url 'logout' %}">
