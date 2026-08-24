@@ -2,7 +2,7 @@
 
 from django.db import migrations
 
-def populate_test_quiz_data(apps, schema_editor):
+def populate_test_quiz_data(apps):
     Course = apps.get_model("assignment_portal", "Course")
     Question = apps.get_model("assignment_portal", "Question")
     Answer = apps.get_model("assignment_portal", "Answer")
