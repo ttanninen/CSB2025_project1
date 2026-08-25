@@ -10,21 +10,23 @@ from django.db import connection
 
 from .models import Course, Submission
 
+import logging
+
+security_logger = logging.getLogger("security")
 
 def register(request):
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
 
-        # FLAW A07 Identification and Authentication Failures
+        # FLAW A07:2021 Identification and Authentication Failures
         
         user = User.objects.create_user(
             username=username,
             password=password
         )
         
-
-        # FLAW A07 fix
+        # FLAW A07:2021 fix
         '''
         try:
             validate_password(password)
@@ -37,6 +39,12 @@ def register(request):
             password=password
         )
         '''
+
+        # FLAW A09:2021 fix, also see settings.py
+        '''
+        security_logger.info("New user registered: %s", username)
+        '''
+
         login(request, user)
 
         return redirect("index")
@@ -48,7 +56,7 @@ def register(request):
 def index(request):
     search = request.GET.get("search", "")
     if search:
-        # FLAW A03 Injection
+        # FLAW A03:2021 Injection
         with connection.cursor() as c:
             c.execute(
                 "SELECT id, name FROM assignment_portal_course "
@@ -58,7 +66,7 @@ def index(request):
 
         courses = [{"id": row[0], "name": row[1]} for row in rows]
 
-        # FLAW A03 fix
+        # FLAW A03:2021 fix
         '''
         courses = Course.objects.filter(
             name__icontains = search,
@@ -123,13 +131,13 @@ def quiz(request, course_id):
 @login_required
 def results(request, submission_id):
     
-    # FLAW A01 Broken Access Control
+    # FLAW A01:2021 Broken Access Control
     submission = get_object_or_404(
         Submission,
         id=submission_id
     )
 
-    # FLAW A01 fix
+    # FLAW A01:2021 fix
     '''
     submission = get_object_or_404(
         Submission,

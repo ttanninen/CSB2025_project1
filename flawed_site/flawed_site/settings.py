@@ -22,8 +22,39 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-+cdc3tw(i*5r&uup-r1n=a9^egyjmdjc4_dnu^$1w@@t@km7zz'
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# SECURITY WARNING: don't run with debug turned on in production! - Hold my beer
+
+# FLAW A05:2021 Security Misconfiguration
 DEBUG = True
+
+# FLAW A05:2021 fix
+'''
+DEBUG = False
+'''
+
+# FLAW A09:2021 Security Logging and Monitoring Failures
+# LOGGING = {}
+
+# FLAW A09:2021 fix, also see register-view in views.py 
+'''
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "file": {
+            "class": "logging.FileHandler",
+            "filename": "security.log",
+        },
+    },
+    "loggers": {
+        "security": {
+            "handlers": ["file"],
+            "level": "INFO",
+            "propagate": False,
+        },
+    },
+}
+'''
 
 ALLOWED_HOSTS = []
 
