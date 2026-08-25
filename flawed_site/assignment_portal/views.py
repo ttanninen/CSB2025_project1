@@ -29,10 +29,11 @@ def register(request):
 def index(request):
     search = request.GET.get("search", "")
     if search:
-        '''
+        
         # SAFE SEARCH:
-        courses.objects.filter(
-            name__icontains=search
+        courses = Course.objects.filter(
+            name__icontains = search,
+            is_public = True
         )
         '''
         with connection.cursor() as c:
@@ -46,10 +47,10 @@ def index(request):
         courses = [
             {"id": row[0], "name": row[1]}
             for row in rows
-        ]
+        ]'''
 
     else:
-        courses = Course.objects.all()
+        courses = Course.objects.filter(is_public = True)
 
     student = request.user
 
