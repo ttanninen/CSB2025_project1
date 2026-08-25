@@ -42,7 +42,7 @@
             {% for submission in submissions %}
                 <li>
                     {{ submission.course.name }}:
-                    {{ submission.points }} / 3 points
+                    {{ submission.points }} / 2 points
                     <a href="{% url 'results' submission.id %}">[ View result ]</a>
                 </li>
             {% empty %}

@@ -29,16 +29,7 @@ def register(request):
 def index(request):
     search = request.GET.get("search", "")
     if search:
-
-        '''
-        # SAFE SEARCH:
-        courses = Course.objects.filter(
-            name__icontains = search,
-            is_public = True
-        )
-        '''
-
-        # UNSAFE SEARCH:
+        # FLAW A03 Injection
         with connection.cursor() as c:
             c.execute(
                 "SELECT id, name FROM assignment_portal_course "
@@ -47,6 +38,14 @@ def index(request):
             rows = c.fetchall()
 
         courses = [{"id": row[0], "name": row[1]} for row in rows]
+
+        # FLAW A03 fix
+        '''
+        courses = Course.objects.filter(
+            name__icontains = search,
+            is_public = True
+        )
+        '''
 
     else:
         courses = Course.objects.filter(is_public = True)
@@ -104,10 +103,21 @@ def quiz(request, course_id):
 
 @login_required
 def results(request, submission_id):
+    
+    # FLAW A01 Broken Access Control
     submission = get_object_or_404(
         Submission,
         id=submission_id
     )
+
+    # FLAW A01 fix
+    '''
+    submission = get_object_or_404(
+        Submission,
+        id=submission_id,
+        student = request.user
+    )
+    '''
 
     return render(request, "assignment_portal/results.html",
                   {"submission": submission})
