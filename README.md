@@ -9,3 +9,32 @@ This is a demonstration of a web application with five security flaws from the O
 - A05:2021 Security Misconfiguration
 - A07:2021 Identification and Authentication Failures
 - A09:2021 Security Logging and Monitoring Failures
+
+
+## Installation instructions
+
+Clone the repository
+```bash
+git clone https://github.com/ttanninen/CSB2025_project1.git
+cd flawed_site
+```
+
+Set up virtual environment and build dependencies
+```bash
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python manage.py migrate
+```
+
+Run server
+```bash
+python manage.py runserver
+```
+
+Use your web browser and browse to
+```
+[http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+```
+
+
