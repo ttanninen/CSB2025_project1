@@ -29,25 +29,24 @@ def register(request):
 def index(request):
     search = request.GET.get("search", "")
     if search:
-        
+
+        '''
         # SAFE SEARCH:
         courses = Course.objects.filter(
             name__icontains = search,
             is_public = True
         )
         '''
+
+        # UNSAFE SEARCH:
         with connection.cursor() as c:
             c.execute(
                 "SELECT id, name FROM assignment_portal_course "
                 "WHERE is_public = 1 AND name LIKE '%" + search + "%'"
             )
-
             rows = c.fetchall()
 
-        courses = [
-            {"id": row[0], "name": row[1]}
-            for row in rows
-        ]'''
+        courses = [{"id": row[0], "name": row[1]} for row in rows]
 
     else:
         courses = Course.objects.filter(is_public = True)
