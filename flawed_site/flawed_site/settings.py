@@ -33,7 +33,7 @@ DEBUG = False
 '''
 
 # FLAW A09:2021 Security Logging and Monitoring Failures
-# LOGGING = {}
+LOGGING = {}
 
 # FLAW A09:2021 fix, also see register-view in views.py 
 '''
@@ -56,7 +56,7 @@ LOGGING = {
 }
 '''
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 
 # Application definition
