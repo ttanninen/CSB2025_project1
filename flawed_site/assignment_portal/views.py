@@ -130,13 +130,14 @@ def quiz(request, course_id):
 
 @login_required
 def results(request, submission_id):
-    
+    username = request.user.username
     # FLAW A01:2021 Broken Access Control
+    
     submission = get_object_or_404(
         Submission,
         id=submission_id
     )
-
+    
     # FLAW A01:2021 fix
     '''
     submission = get_object_or_404(
@@ -147,7 +148,7 @@ def results(request, submission_id):
     '''
 
     return render(request, "assignment_portal/results.html",
-                  {"submission": submission})
+                  {"submission": submission, "username": username})
 
 
 @login_required
