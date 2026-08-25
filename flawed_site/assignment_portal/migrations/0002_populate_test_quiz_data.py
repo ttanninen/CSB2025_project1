@@ -2,13 +2,15 @@
 
 from django.db import migrations
 
-def populate_test_quiz_data(apps):
+def populate_test_quiz_data(apps, schema_editor):
     Course = apps.get_model("assignment_portal", "Course")
     Question = apps.get_model("assignment_portal", "Question")
     Answer = apps.get_model("assignment_portal", "Answer")
 
     # Course 1 quiz
-    sql = Course.objects.create(name="Basics of SQL")
+    sql = Course.objects.create(
+        name = "Basics of SQL",
+        is_public = True)
 
     question = Question.objects.create(
         course = sql,
@@ -46,7 +48,9 @@ def populate_test_quiz_data(apps):
 
     # Course 2 quiz
 
-    python = Course.objects.create(name="Python 101")
+    python = Course.objects.create(
+        name = "Python 101",
+        is_public = True)
 
     question = Question.objects.create(
         course = python,
@@ -80,6 +84,12 @@ def populate_test_quiz_data(apps):
         question = question,
         text = "False",
         is_correct = True
+    )
+
+    # Secret unpublished course
+    secret_course = Course.objects.create(
+        name = "Secret course",
+        is_public = False
     )
 
 

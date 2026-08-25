@@ -38,7 +38,7 @@ def index(request):
         with connection.cursor() as c:
             c.execute(
                 "SELECT id, name FROM assignment_portal_course "
-                "WHERE name LIKE '%" + search + "%'"
+                "WHERE is_public = 1 AND name LIKE '%" + search + "%'"
             )
 
             rows = c.fetchall()
@@ -115,6 +115,6 @@ def results(request, submission_id):
 
 @login_required
 def browse(request):
-    courses = Course.objects.all()
+    courses = Course.objects.filter(is_public = True)
     return render(request, "assignment_portal/browse.html",
                   {"courses": courses})
