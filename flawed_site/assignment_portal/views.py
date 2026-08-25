@@ -3,6 +3,9 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
+
 from django.db import connection
 
 from .models import Course, Submission
@@ -13,11 +16,27 @@ def register(request):
         username = request.POST.get("username")
         password = request.POST.get("password")
 
+        # FLAW A07 Identification and Authentication Failures
+        
         user = User.objects.create_user(
             username=username,
             password=password
         )
+        
 
+        # FLAW A07 fix
+        '''
+        try:
+            validate_password(password)
+
+        except ValidationError as error:
+            return render(request, "assignment_portal/register.html", {"error": error, "username": username})
+
+        user = User.objects.create_user(
+            username=username,
+            password=password
+        )
+        '''
         login(request, user)
 
         return redirect("index")
