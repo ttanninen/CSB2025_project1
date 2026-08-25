@@ -16,7 +16,7 @@ This is a demonstration of a web application with five security flaws from the O
 Clone the repository
 ```bash
 git clone https://github.com/ttanninen/CSB2025_project1.git
-cd flawed_site
+cd CSB2025_project1/flawed_site
 ```
 
 Set up virtual environment and build dependencies
