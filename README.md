@@ -138,8 +138,6 @@ The fix is obviously to implement logging features to the application backend. T
 In this demonstration the only logged feature is an event when a new user is registered. The log is stored in the application root folder in file “security.log”. Needless to say, in a real-world application the logging would be done more extensively.
 First set up the logging in settings.py:
 
-<img src="screenshots/flaw-5-before-1.png" width="50%">
-
 [A09:2021 fix 1 in code](https://github.com/ttanninen/CSB2025_project1/blob/a9399f3520af09571faba56a822f84d63a3032f7/flawed_site/flawed_site/settings.py#L38)
 
 Then implement logging features where desired:
