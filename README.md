@@ -44,7 +44,7 @@ For the demonstration of a flawed web application, I built a very rudimentary qu
 ### FLAW 1: 
 A07:2021 Identification and Authentication Failures
 
-[A07:2021 flaw](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/assignment_portal/views.py#L22)
+[A07:2021 flaw in code](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/assignment_portal/views.py#L22)
 
 <img src="screenshots/flaw-1-before-1.png" width="50%">
 
@@ -54,14 +54,14 @@ An easy fix is to use Django’s built-in password validators, which can be set 
 
 To display the possible error messages when insecure passwords get caught in the validators, ValidationError from django.core.exceptions can also be imported and implemented in the application logic as shown in the fix in views.py and in templates/register.html.
 
-[A07:2021 fix](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/assignment_portal/views.py#L29)
+[A07:2021 fix in code](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/assignment_portal/views.py#L29)
 
 <img src="screenshots/flaw-1-after-1.png" width="50%">
  
 ### FLAW 2:
 A01:2021 Broken Access Control
 
-[A01:2021 flaw](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/assignment_portal/views.py#L134)
+[A01:2021 flaw in code](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/assignment_portal/views.py#L134)
 
 <img src="screenshots/flaw-2-before-1.png" width="50%">
 <img src="screenshots/flaw-2-before-2.png" width="50%">
@@ -72,14 +72,14 @@ The flaw can be demonstrated through the “results” page of the application. 
 
 The fix for this flaw is to verify that the user browsing the submission result matches to the user who originally made the submission. This is done simply by comparing the user currently logged in to the recorded submission user with the Django shortcut function “get_object_or_404”. If a Submission object user does not match the user who is currently logged in (retrieved by request.user), no Submission object is retrieved, and the server should return a 404 error.
 
-[A01:2021 fix](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/assignment_portal/views.py#L140)
+[A01:2021 fix in code](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/assignment_portal/views.py#L140)
 
 <img src="screenshots/flaw-2-after-1.png" width="50%">
  
 ### FLAW 3:
 A05:2021 Security Misconfiguration
 
-[A05:2021 flaw](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/flawed_site/settings.py#L28)
+[A05:2021 flaw in code](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/flawed_site/settings.py#L28)
 
 <img src="screenshots/flaw-3-before-1.png" width="50%">
 
@@ -89,7 +89,7 @@ The danger with debug error messages is that in situations where an error occurs
 
 The fix is to simply modify settings.py and set variable DEBUG = False, which disables the debugging features.
 
-[A05:2021 fix](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/flawed_site/settings.py#L32)
+[A05:2021 fix in code](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/flawed_site/settings.py#L32)
 
 <img src="screenshots/flaw-3-after-1.png" width="50%">
  
@@ -121,13 +121,13 @@ Where the WHERE statement is first closed by adding ‘ to the end. Then an alwa
 
 The fix is not to use hard-coded SQL queries, but instead use Django’s built in ORM functions. In this case, the safe search query can be achieved by filtering all Course objects by name__icontains (case insensitive name) and is_public = True (meant to be searchable). In this case, the fix is quite a lot easier to implement than to build connections and queries to directly interact with the database.
 
-[A03:2021 fix](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/assignment_portal/views.py#L69)
+[A03:2021 fix in code](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/assignment_portal/views.py#L69)
 
 <img src="screenshots/flaw-4-after-1.png" width="50%">
 
 ### FLAW 5:
 A09:2021 Security Logging and Monitoring Failures
-[A09:2021 flaw](https://github.com/ttanninen/CSB2025_project1/blob/a9399f3520af09571faba56a822f84d63a3032f7/flawed_site/flawed_site/settings.py#L36)
+[A09:2021 flaw in code](https://github.com/ttanninen/CSB2025_project1/blob/a9399f3520af09571faba56a822f84d63a3032f7/flawed_site/flawed_site/settings.py#L36)
 
 <img src="screenshots/flaw-5-before-1.png" width="50%">
 
@@ -138,10 +138,10 @@ The fix is obviously to implement logging features to the application backend. T
 In this demonstration the only logged feature is an event when a new user is registered. The log is stored in the application root folder in file “security.log”. Needless to say, in a real-world application the logging would be done more extensively.
 First set up the logging in settings.py:
 
-[A09:2021 fix 1](https://github.com/ttanninen/CSB2025_project1/blob/a9399f3520af09571faba56a822f84d63a3032f7/flawed_site/flawed_site/settings.py#L38)
+[A09:2021 fix 1 in code](https://github.com/ttanninen/CSB2025_project1/blob/a9399f3520af09571faba56a822f84d63a3032f7/flawed_site/flawed_site/settings.py#L38)
 
 Then implement logging features where desired:
 
-[A09:2021 fix 2](https://github.com/ttanninen/CSB2025_project1/blob/a9399f3520af09571faba56a822f84d63a3032f7/flawed_site/assignment_portal/views.py#L43)
+[A09:2021 fix 2 in code](https://github.com/ttanninen/CSB2025_project1/blob/a9399f3520af09571faba56a822f84d63a3032f7/flawed_site/assignment_portal/views.py#L43)
 
 <img src="screenshots/flaw-5-after-1.png" width="50%">
