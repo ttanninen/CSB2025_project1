@@ -46,31 +46,52 @@ A07:2021 Identification and Authentication Failures
 
 [A07:2021 flaw](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/assignment_portal/views.py#L22)
 
+![screenshots/flaw-1-before-1.png](screenshots/flaw-1-before-1.png)
+
 This flaw is present in the new user registration logic in the views.py. When registering a new user, the application does not perform any type of password validation. Therefore, users can register an account with ridiculously insecure passwords.
+
 An easy fix is to use Django’s built-in password validators, which can be set up in settings.py and imported to the views.py from django.contrib.auth.password_validation. The selectable validators utilize common password validation methods, such as minimum password length and common password rejection.
+
 To display the possible error messages when insecure passwords get caught in the validators, ValidationError from django.core.exceptions can also be imported and implemented in the application logic as shown in the fix in views.py and in templates/register.html.
 
 [A07:2021 fix](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/assignment_portal/views.py#L29)
+
+![screenshots/flaw-1-after-1.png](screenshots/flaw-1-after-1.png)
  
 ### FLAW 2:
 A01:2021 Broken Access Control
 
 [A01:2021 flaw](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/assignment_portal/views.py#L134)
 
-This flaw is a result of inadequate authorization control in the application. Even though most of the application content requires user to be logged in, there is no system which verifies what content the user has permissions to access. The flaw can be demonstrated through the “results” page of the application. Users can see their own quiz submission results by clicking the link on the course after taking the quiz. However, by changing the “result_id” in the address bar, the user can access the quiz results of other students.
+![screenshots/flaw-2-before-1.png](screenshots/flaw-2-before-1.png)
+![screenshots/flaw-2-before-2.png](screenshots/flaw-2-before-2.png)
+
+This flaw is a result of inadequate authorization control in the application. Even though most of the application content requires user to be logged in, there is no system which verifies what content the user has permissions to access. 
+
+The flaw can be demonstrated through the “results” page of the application. Users can see their own quiz submission results by clicking the link on the course after taking the quiz. However, by changing the “result_id” in the address bar, the user can access the quiz results of other students.
+
 The fix for this flaw is to verify that the user browsing the submission result matches to the user who originally made the submission. This is done simply by comparing the user currently logged in to the recorded submission user with the Django shortcut function “get_object_or_404”. If a Submission object user does not match the user who is currently logged in (retrieved by request.user), no Submission object is retrieved, and the server should return a 404 error.
 
 [A01:2021 fix](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/assignment_portal/views.py#L140)
+
+![screenshots/flaw-2-after-1.png](screenshots/flaw-2-after-1.png)
  
 ### FLAW 3:
 A05:2021 Security Misconfiguration
 
 [A05:2021 flaw](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/flawed_site/settings.py#L28)
 
-Flaw number three is rather straightforward and it is visible if the fix for the earlier flaw is being tested: Instead of a standard 404 error page, the server returns a debug error page to the user. The danger with debug error messages is that in situations where an error occurs, the messages can reveal sensitive data to users, such as source-code details and paths.
+![screenshots/flaw-3-before-1.png](screenshots/flaw-3-before-1.png)
+
+Flaw number three is rather straightforward and it is visible if the fix for the earlier flaw is being tested: Instead of a standard 404 error page, the server returns a debug error page to the user. 
+
+The danger with debug error messages is that in situations where an error occurs, the messages can reveal sensitive data to users, such as source-code details and paths.
+
 The fix is to simply modify settings.py and set variable DEBUG = False, which disables the debugging features.
 
 [A05:2021 fix](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/flawed_site/settings.py#L32)
+
+![screenshots/flaw-3-after-1.png](screenshots/flaw-3-after-1.png)
  
 ### FLAW 4:
 A03:2021 Injection
