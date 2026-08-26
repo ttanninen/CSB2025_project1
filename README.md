@@ -97,7 +97,11 @@ The fix is to simply modify settings.py and set variable DEBUG = False, which di
 A03:2021 Injection
 [A03:2021 flaw](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/assignment_portal/views.py#L59)
 
+![screenshots/flaw-4-before-1.png](screenshots/flaw-4-before-1.png)
+![screenshots/flaw-4-before-2.png](screenshots/flaw-4-before-2.png)
+
 This is a flaw which allows users to manipulate SQL queries in such a way, that users can fetch and possibly manipulate database contents, to which they should not normally have access. The query for course search function can be manipulated by user input to retrieve hidden entries: Using search query “’ OR 1=1 -- “ displays all courses in the course database, even the ones, which should be hidden by a tag “is_public = False”. 
+
 The working logic of the SQL injection flaw is this: The original query for the search function is:
 
 ```
@@ -114,13 +118,18 @@ OR 1=1
 ```
 
 Where the WHERE statement is first closed by adding ‘ to the end. Then an always-true OR statement is introduced which effectively makes the query say “if 1 = 1, return all id and name entries from the course table” disregarding the is_public = 1 clause. The final “--" from the user input comments out the possible tail of the original query.
+
 The fix is not to use hard-coded SQL queries, but instead use Django’s built in ORM functions. In this case, the safe search query can be achieved by filtering all Course objects by name__icontains (case insensitive name) and is_public = True (meant to be searchable). In this case, the fix is quite a lot easier to implement than to build connections and queries to directly interact with the database.
 
 [A03:2021 fix](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/assignment_portal/views.py#L69)
 
+![screenshots/flaw-4-after-1.png](screenshots/flaw-4-after-1.png)
+
 ### FLAW 5:
 A09:2021 Security Logging and Monitoring Failures
 [A09:2021 flaw](https://github.com/ttanninen/CSB2025_project1/blob/a9399f3520af09571faba56a822f84d63a3032f7/flawed_site/flawed_site/settings.py#L36)
+
+![screenshots/flaw-5-before-1.png](screenshots/flaw-5-before-1.png)
 
 As such, the application does not have any type of logging in place to monitor and detect potentially suspicious activity. Logging would be an important security feature especially if a security breach or other unauthorized activity should be investigated afterwards.
 The fix is obviously to implement logging features to the application backend. This can be achieved by setting up loggers in settings.py and importing Python logging library in the modules where the loggers will be placed. Natural functions where the loggers could be placed would be user inputs, whenever user logins fail, suspicious user registrations, or when someone unauthorized tries to access restricted parts of the application.
@@ -132,3 +141,5 @@ First set up the logging in settings.py:
 Then implement logging features where desired:
 
 [A09:2021 fix 2](https://github.com/ttanninen/CSB2025_project1/blob/a9399f3520af09571faba56a822f84d63a3032f7/flawed_site/assignment_portal/views.py#L43)
+
+![screenshots/flaw-5-after-1.png](screenshots/flaw-5-after-1.png)
