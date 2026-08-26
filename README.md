@@ -132,7 +132,9 @@ A09:2021 Security Logging and Monitoring Failures
 ![screenshots/flaw-5-before-1.png](screenshots/flaw-5-before-1.png)
 
 As such, the application does not have any type of logging in place to monitor and detect potentially suspicious activity. Logging would be an important security feature especially if a security breach or other unauthorized activity should be investigated afterwards.
+
 The fix is obviously to implement logging features to the application backend. This can be achieved by setting up loggers in settings.py and importing Python logging library in the modules where the loggers will be placed. Natural functions where the loggers could be placed would be user inputs, whenever user logins fail, suspicious user registrations, or when someone unauthorized tries to access restricted parts of the application.
+
 In this demonstration the only logged feature is an event when a new user is registered. The log is stored in the application root folder in file “security.log”. Needless to say, in a real-world application the logging would be done more extensively.
 First set up the logging in settings.py:
 
