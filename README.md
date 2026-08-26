@@ -46,7 +46,7 @@ A07:2021 Identification and Authentication Failures
 
 [A07:2021 flaw](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/assignment_portal/views.py#L22)
 
-![screenshots/flaw-1-before-1.png](screenshots/flaw-1-before-1.png)
+<img src="screenshots/flaw-1-before-1.png" width="50%">
 
 This flaw is present in the new user registration logic in the views.py. When registering a new user, the application does not perform any type of password validation. Therefore, users can register an account with ridiculously insecure passwords.
 
@@ -56,15 +56,15 @@ To display the possible error messages when insecure passwords get caught in the
 
 [A07:2021 fix](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/assignment_portal/views.py#L29)
 
-![screenshots/flaw-1-after-1.png](screenshots/flaw-1-after-1.png)
+<img src="screenshots/flaw-1-after-1.png" width="50%">
  
 ### FLAW 2:
 A01:2021 Broken Access Control
 
 [A01:2021 flaw](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/assignment_portal/views.py#L134)
 
-![screenshots/flaw-2-before-1.png](screenshots/flaw-2-before-1.png)
-![screenshots/flaw-2-before-2.png](screenshots/flaw-2-before-2.png)
+<img src="screenshots/flaw-2-before-1.png" width="50%">
+<img src="screenshots/flaw-2-before-2.png" width="50%">
 
 This flaw is a result of inadequate authorization control in the application. Even though most of the application content requires user to be logged in, there is no system which verifies what content the user has permissions to access. 
 
@@ -74,14 +74,14 @@ The fix for this flaw is to verify that the user browsing the submission result 
 
 [A01:2021 fix](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/assignment_portal/views.py#L140)
 
-![screenshots/flaw-2-after-1.png](screenshots/flaw-2-after-1.png)
+<img src="screenshots/flaw-2-after-1.png" width="50%">
  
 ### FLAW 3:
 A05:2021 Security Misconfiguration
 
 [A05:2021 flaw](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/flawed_site/settings.py#L28)
 
-![screenshots/flaw-3-before-1.png](screenshots/flaw-3-before-1.png)
+<img src="screenshots/flaw-3-before-1.png" width="50%">
 
 Flaw number three is rather straightforward and it is visible if the fix for the earlier flaw is being tested: Instead of a standard 404 error page, the server returns a debug error page to the user. 
 
@@ -91,14 +91,14 @@ The fix is to simply modify settings.py and set variable DEBUG = False, which di
 
 [A05:2021 fix](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/flawed_site/settings.py#L32)
 
-![screenshots/flaw-3-after-1.png](screenshots/flaw-3-after-1.png)
+<img src="screenshots/flaw-3-after-1.png" width="50%">
  
 ### FLAW 4:
 A03:2021 Injection
 [A03:2021 flaw](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/assignment_portal/views.py#L59)
 
-![screenshots/flaw-4-before-1.png](screenshots/flaw-4-before-1.png)
-![screenshots/flaw-4-before-2.png](screenshots/flaw-4-before-2.png)
+<img src="screenshots/flaw-4-before-1.png" width="50%">
+<img src="screenshots/flaw-4-before-2.png" width="50%">
 
 This is a flaw which allows users to manipulate SQL queries in such a way, that users can fetch and possibly manipulate database contents, to which they should not normally have access. The query for course search function can be manipulated by user input to retrieve hidden entries: Using search query “’ OR 1=1 -- “ displays all courses in the course database, even the ones, which should be hidden by a tag “is_public = False”. 
 
@@ -123,13 +123,13 @@ The fix is not to use hard-coded SQL queries, but instead use Django’s built i
 
 [A03:2021 fix](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/assignment_portal/views.py#L69)
 
-![screenshots/flaw-4-after-1.png](screenshots/flaw-4-after-1.png)
+<img src="screenshots/flaw-4-after-1.png" width="50%">
 
 ### FLAW 5:
 A09:2021 Security Logging and Monitoring Failures
 [A09:2021 flaw](https://github.com/ttanninen/CSB2025_project1/blob/a9399f3520af09571faba56a822f84d63a3032f7/flawed_site/flawed_site/settings.py#L36)
 
-![screenshots/flaw-5-before-1.png](screenshots/flaw-5-before-1.png)
+<img src="screenshots/flaw-5-before-1.png" width="50%">
 
 As such, the application does not have any type of logging in place to monitor and detect potentially suspicious activity. Logging would be an important security feature especially if a security breach or other unauthorized activity should be investigated afterwards.
 
@@ -144,4 +144,4 @@ Then implement logging features where desired:
 
 [A09:2021 fix 2](https://github.com/ttanninen/CSB2025_project1/blob/a9399f3520af09571faba56a822f84d63a3032f7/flawed_site/assignment_portal/views.py#L43)
 
-![screenshots/flaw-5-after-1.png](screenshots/flaw-5-after-1.png)
+<img src="screenshots/flaw-5-after-1.png" width="50%">
