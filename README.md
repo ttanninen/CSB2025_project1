@@ -128,6 +128,7 @@ The fix is not to use hard-coded SQL queries, but instead use Django’s built i
 
 ### FLAW 5:
 A09:2021 Security Logging and Monitoring Failures
+
 [A09:2021 flaw in code](https://github.com/ttanninen/CSB2025_project1/blob/a9399f3520af09571faba56a822f84d63a3032f7/flawed_site/flawed_site/settings.py#L36)
 
 As such, the application does not have any type of logging in place to monitor and detect potentially suspicious activity. Logging would be an important security feature especially if a security breach or other unauthorized activity should be investigated afterwards.
