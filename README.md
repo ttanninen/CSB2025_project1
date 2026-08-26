@@ -39,7 +39,7 @@ Use your web browser and browse to
 ## Introduction
 For the demonstration of a flawed web application, I built a very rudimentary quiz portal where students can answer small quizzes made by course teachers. The quizzes can be either browsed from the list or searched by the course search form. The database is populated with sample course and quiz data through migrations, but tester has to register new user(s) and make a couple of quiz submissions to test the security flaws.
 
-## The application contains following five flaws from the OWASP 2021 top-10 list:
+## The flaws and their fixes from the OWASP 2021 top-10 list:
 
 ### FLAW 1: 
 A07:2021 Identification and Authentication Failures
