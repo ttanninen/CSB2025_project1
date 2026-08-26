@@ -45,6 +45,7 @@ For the demonstration of a flawed web application, I built a very rudimentary qu
 A07:2021 Identification and Authentication Failures
 
 [A07:2021 flaw](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/assignment_portal/views.py#L22)
+
 This flaw is present in the new user registration logic in the views.py. When registering a new user, the application does not perform any type of password validation. Therefore, users can register an account with ridiculously insecure passwords.
 An easy fix is to use Django’s built-in password validators, which can be set up in settings.py and imported to the views.py from django.contrib.auth.password_validation. The selectable validators utilize common password validation methods, such as minimum password length and common password rejection.
 To display the possible error messages when insecure passwords get caught in the validators, ValidationError from django.core.exceptions can also be imported and implemented in the application logic as shown in the fix in views.py and in templates/register.html.
@@ -54,6 +55,7 @@ To display the possible error messages when insecure passwords get caught in the
 A01:2021 Broken Access Control
 
 [A01:2021 flaw](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/assignment_portal/views.py#L134)
+
 This flaw is a result of inadequate authorization control in the application. Even though most of the application content requires user to be logged in, there is no system which verifies what content the user has permissions to access. The flaw can be demonstrated through the “results” page of the application. Users can see their own quiz submission results by clicking the link on the course after taking the quiz. However, by changing the “result_id” in the address bar, the user can access the quiz results of other students.
 The fix for this flaw is to verify that the user browsing the submission result matches to the user who originally made the submission. This is done simply by comparing the user currently logged in to the recorded submission user with the Django shortcut function “get_object_or_404”. If a Submission object user does not match the user who is currently logged in (retrieved by request.user), no Submission object is retrieved, and the server should return a 404 error.
 [A01:2021 fix](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/assignment_portal/views.py#L140)
@@ -62,6 +64,7 @@ The fix for this flaw is to verify that the user browsing the submission result 
 A05:2021 Security Misconfiguration
 
 [A05:2021 flaw](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/flawed_site/settings.py#L28)
+
 Flaw number three is rather straightforward and it is visible if the fix for the earlier flaw is being tested: Instead of a standard 404 error page, the server returns a debug error page to the user. The danger with debug error messages is that in situations where an error occurs, the messages can reveal sensitive data to users, such as source-code details and paths.
 The fix is to simply modify settings.py and set variable DEBUG = False, which disables the debugging features.
 [A05:2021 fix](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/flawed_site/settings.py#L32)
@@ -69,6 +72,7 @@ The fix is to simply modify settings.py and set variable DEBUG = False, which di
 ### FLAW 4:
 A03:2021 Injection
 [A03:2021 flaw](https://github.com/ttanninen/CSB2025_project1/blob/d4f2cea470eb76d85e91ebcda16ae0c27861cba6/flawed_site/assignment_portal/views.py#L59)
+
 This is a flaw which allows users to manipulate SQL queries in such a way, that users can fetch and possibly manipulate database contents, to which they should not normally have access. The query for course search function can be manipulated by user input to retrieve hidden entries: Using search query “’ OR 1=1 -- “ displays all courses in the course database, even the ones, which should be hidden by a tag “is_public = False”. 
 The working logic of the SQL injection flaw is this: The original query for the search function is:
 
@@ -92,10 +96,12 @@ The fix is not to use hard-coded SQL queries, but instead use Django’s built i
 ### FLAW 5:
 A09:2021 Security Logging and Monitoring Failures
 [A09:2021 flaw](https://github.com/ttanninen/CSB2025_project1/blob/a9399f3520af09571faba56a822f84d63a3032f7/flawed_site/flawed_site/settings.py#L36)
+
 As such, the application does not have any type of logging in place to monitor and detect potentially suspicious activity. Logging would be an important security feature especially if a security breach or other unauthorized activity should be investigated afterwards.
 The fix is obviously to implement logging features to the application backend. This can be achieved by setting up loggers in settings.py and importing Python logging library in the modules where the loggers will be placed. Natural functions where the loggers could be placed would be user inputs, whenever user logins fail, suspicious user registrations, or when someone unauthorized tries to access restricted parts of the application.
 In this demonstration the only logged feature is an event when a new user is registered. The log is stored in the application root folder in file “security.log”. Needless to say, in a real-world application the logging would be done more extensively.
 First set up the logging in settings.py:
 [A09:2021 fix 1](https://github.com/ttanninen/CSB2025_project1/blob/a9399f3520af09571faba56a822f84d63a3032f7/flawed_site/flawed_site/settings.py#L38)
+
 Then implement logging features where desired:
 [A09:2021 fix 2](https://github.com/ttanninen/CSB2025_project1/blob/a9399f3520af09571faba56a822f84d63a3032f7/flawed_site/assignment_portal/views.py#L43)
